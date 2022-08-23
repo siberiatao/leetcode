@@ -41,4 +41,25 @@ public class SearchInsert {
         }
         return index;
     }
+
+    /**
+     * 二分法写法
+     * @param nums nums
+     * @param target target
+     * @return index
+     */
+    public int searchInsert1(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length -1 ;
+        int mid = (right - left + 1)/2 + left;
+        while (left <= right) {
+            if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid -1;
+            }
+            mid = (right - left + 1)/2 + left;
+        }
+        return left;
+    }
 }
