@@ -32,7 +32,7 @@ public class RemoveElements {
         }
         ListNode pre = head;
         ListNode cur = head.next;
-        while (head.next != null) {
+        while (cur != null) {
             if (cur.val == val) {
                 pre.next = cur.next;
             } else {
