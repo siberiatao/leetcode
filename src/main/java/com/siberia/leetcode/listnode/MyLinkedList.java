@@ -1,74 +1,144 @@
 package com.siberia.leetcode.listnode;
 
+/**
+ * 操作链表
+ */
 public class MyLinkedList {
-    private int size;
-    private final ListNode head;
+    private ListNode listNode;
 
     public MyLinkedList() {
-        size = 0;
-        head = new ListNode(-2);
     }
 
     public int get(int index) {
-        if (size <= index || index < 0) {
+        int count = 0;
+        if (listNode == null) {
             return -1;
         }
-        ListNode cur = head;
-        for (int i = 0; i < index + 1; i++) {
-            cur = cur.next;
+        ListNode curNode = listNode;
+        while (curNode.next != null && index > count) {
+            count++;
+            curNode = curNode.next;
         }
-        return cur.val;
+        if (index > count) {
+            return -1;
+        } else {
+            return curNode.val;
+        }
     }
 
     public void addAtHead(int val) {
-        ListNode node = new ListNode(val);
-        node.next = head.next;
-        head.next = node;
-        size++;
+        if (listNode == null) {
+            listNode = new ListNode(val);
+            return;
+        }
+        ListNode newNode = new ListNode(val);
+        newNode.next = listNode;
+        listNode = newNode;
+
     }
 
     public void addAtTail(int val) {
-        ListNode curNode = head;
+        if (listNode == null) {
+            listNode = new ListNode(val);
+            return;
+        }
+        if (listNode.next == null) {
+            listNode.next = new ListNode(val);
+            return;
+        }
+        ListNode curNode = listNode.next;
         while (curNode.next != null) {
             curNode = curNode.next;
         }
         curNode.next = new ListNode(val);
-        size++;
-
     }
 
     public void addAtIndex(int index, int val) {
-        if (index < 0) {
-            addAtHead(val);
+        if (listNode == null) {
+            listNode = new ListNode(val);
             return;
         }
-        if (index > size) {
+        if (listNode.next == null) {
+            if (index <= 0) {
+                ListNode newNode = new ListNode(val);
+                newNode.next = listNode;
+                listNode = newNode;
+                return;
+            }
+            if (index == 1) {
+                listNode.next = new ListNode(val);
+                return;
+            }
             return;
         }
-        if (index == size) {
-            addAtTail(val);
+        if (index == 1) {
+            ListNode newNode = new ListNode(val);
+            newNode.next = listNode;
+            listNode = newNode;
             return;
         }
-        ListNode curNode = head;
-        for (int i = 0; i < index; i++) {
+        int count = 1;
+        ListNode curNode = listNode.next;
+        ListNode preNode = listNode;
+        while (curNode.next != null) {
+            if (count == index) {
+                preNode.next = new ListNode(val);
+                preNode.next.next = curNode;
+                return;
+            }
+            preNode = curNode;
             curNode = curNode.next;
+            count++;
         }
-        ListNode newNode = new ListNode(val);
-        newNode.next = curNode.next;
-        curNode.next = newNode;
-        size++;
-
+        if (index == count + 1) {
+            addAtTail(val);
+        }
     }
 
     public void deleteAtIndex(int index) {
-        if (size <= index || index < 0) {
+        if (listNode == null) {
             return;
         }
-        ListNode curNode = head;
-        for (int i = 0; i < index; i++) {
-            curNode = curNode.next;
+        if (listNode.next == null) {
+            if (index == 1) {
+                listNode = null;
+            }
+            return;
         }
-        curNode.next = curNode.next.next;
-        size--;
+        int count = 1;
+        ListNode curNode = listNode.next;
+        ListNode preNode = listNode;
+        while (curNode.next != null) {
+            if (count == index) {
+                preNode.next = curNode.next;
+                break;
+            }
+            preNode = curNode;
+            curNode = curNode.next;
+            count++;
+        }
+    }
+
+    public static void main(String[] args) {
+        MyLinkedList myLinkedList = new MyLinkedList();
+//        myLinkedList.addAtHead(7);
+//        myLinkedList.addAtHead(2);
+//        myLinkedList.addAtHead(1);
+//        myLinkedList.addAtIndex(3, 0);
+//        myLinkedList.deleteAtIndex(2);
+//        myLinkedList.addAtHead(6);
+//        myLinkedList.addAtTail(4);
+//        myLinkedList.get(4); // 0-->4
+//        myLinkedList.addAtHead(4);
+//        myLinkedList.addAtIndex(5, 0);
+//        myLinkedList.addAtHead(6);
+
+        //下一个用例
+        myLinkedList.addAtHead(1);
+        myLinkedList.addAtTail(4);
+        myLinkedList.addAtIndex(1, 2);
+        myLinkedList.get(1);
+        myLinkedList.deleteAtIndex(1);
+        myLinkedList.get(1);
     }
 }
